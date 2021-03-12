@@ -1,0 +1,37 @@
+# Query: user.is_organizer
+# ContextLines: 1
+
+7 results - 5 files
+
+agents/mixins.py:
+  6      def dispatch(self, request, *args, **kwargs):
+  7:         if not request.user.is_authenticated or not request.user.is_organisor:
+  8              return redirect("leads:lead-list")
+
+agents/views.py:
+  27          user.is_agent = True
+  28:         user.is_organisor = False
+  29          user.set_password(f"{random.randint(0, 1000000)}")
+
+leads/views.py:
+  28          # initial queryset of leads for the entire organization
+  29:         if user.is_organisor:
+  30              queryset = Lead.objects.filter(
+
+  42          user = self.request.user
+  43:         if user.is_organisor:
+  44              queryset = Lead.objects.filter(
+
+  61          # initial queryset of leads for the entire organization
+  62:         if user.is_organisor:
+  63              queryset = Lead.objects.filter(organization=user.userprofile)
+
+leads/templates/leads/lead_list.html:
+  10              </div>
+  11:             {% if request.user.is_organisor %}
+  12              <div>
+
+templates/navbar.html:
+  12          {% else %}
+  13:           {% if request.user.is_organisor %}
+  14              <a href="{% url 'agents:agent-list' %}"" class="mr-5 hover:text-gray-900">Agents</a>
